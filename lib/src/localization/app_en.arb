@@ -1,0 +1,6 @@
+{
+  "appTitle": "ml_product_recommendation",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}

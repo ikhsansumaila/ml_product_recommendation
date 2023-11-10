@@ -1,0 +1,62 @@
+// import package
+import 'package:flutter/material.dart';
+import 'package:ml_product_recommendation/utils/size.dart';
+
+class LoadedStateSliverAppBar extends StatelessWidget {
+  const LoadedStateSliverAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final SizeConfig sizeConfig = SizeConfig();
+    sizeConfig.init(context);
+    final bodyWidth = sizeConfig.screenWidth;
+    final bodyHeight = sizeConfig.screenHeight;
+    return SliverAppBar(
+      automaticallyImplyLeading: false,
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(bodyHeight * 0.11),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: RichText(
+            text: const TextSpan(
+              text: 'New',
+              style: TextStyle(color: Color(0xFF222222), fontSize: 34, fontWeight: FontWeight.w700),
+              children: <TextSpan>[
+                TextSpan(text: '\nYou\'ve never seen it before', style: TextStyle(fontSize: 11, color: Color(0xFF9B9B9B))),
+              ],
+            ),
+          ),
+          backgroundColor: const Color(0xFFF9F9F9),
+          elevation: 0,
+          actions: [
+            TextButton(
+                onPressed: () async {
+                  // SharedPreferences prefs = await SharedPreferences.getInstance();
+                  // prefs.remove('token');
+                },
+                child: const Text(
+                  'View all',
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ))
+          ],
+        ),
+      ),
+      pinned: false,
+      expandedHeight: bodyHeight * 0.80,
+      flexibleSpace: Align(
+        alignment: Alignment.bottomLeft,
+        child: FlexibleSpaceBar(
+          titlePadding: EdgeInsetsDirectional.only(start: bodyWidth * 0.03, bottom: bodyHeight * 0.10),
+          background: Image.asset(
+            'assets/images/banner/watch_banner.jpg',
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+}
