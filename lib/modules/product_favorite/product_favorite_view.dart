@@ -56,7 +56,7 @@ class _ProductWishListState extends State<ProductWishList> {
             return CustomScrollView(
               slivers: [
                 LoadedStateSliverGrid(
-                  products: value.products.where((element) => element.favorite).toList(),
+                  products: value.products.where((element) => element.favorite == true).toList(),
                 ),
               ],
             );

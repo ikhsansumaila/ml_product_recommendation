@@ -2,8 +2,9 @@
 // ignore_for_file: argument_type_not_assignable_to_error_handler
 
 import 'package:flutter/material.dart';
-import 'package:ml_product_recommendation/api/dummy_api.dart';
+import 'package:ml_product_recommendation/modules/product_list/repository/dummy_api.dart';
 import 'package:ml_product_recommendation/models/product/product_model.dart';
+import 'package:ml_product_recommendation/modules/product_favorite/database/product_favorite.dart';
 import 'package:ml_product_recommendation/utils/state.dart';
 
 class ProductListController with ChangeNotifier {
@@ -17,7 +18,23 @@ class ProductListController with ChangeNotifier {
     notifyListeners();
   }
 
+  void refreshList(List<Product>? products) {
+    if (products != null) {
+      _setProducts(products);
+    } else {
+      getProducts();
+    }
+  }
+
   void _setProducts(List<Product> products) {
+    List<Product> favoriteProductsDB = FavoriteDB.getAll();
+    // FavoriteDB.favoriteBox.deleteFromDisk();
+
+    _products = products.map((product) {
+      product.favorite =
+          favoriteProductsDB.where((productDB) => productDB.id == product.id && productDB.favorite == true).toList().isNotEmpty;
+      return product;
+    }).toList();
     _products = products;
     notifyListeners();
   }

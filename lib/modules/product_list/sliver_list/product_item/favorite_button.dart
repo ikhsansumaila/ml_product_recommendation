@@ -1,6 +1,6 @@
 // import package
 import 'package:flutter/material.dart';
-import 'package:ml_product_recommendation/database/product_favorite.dart';
+import 'package:ml_product_recommendation/modules/product_favorite/database/product_favorite.dart';
 import 'package:ml_product_recommendation/models/product/product_model.dart';
 import 'package:ml_product_recommendation/modules/product_list/product_list_controller.dart';
 import 'package:provider/provider.dart';
@@ -49,25 +49,29 @@ class FavoriteButton extends StatelessWidget {
   }
 
   void onTap(context) async {
-    print('onTap');
-    // setState(() {
     var favorite = !isFavorite;
-    FavoriteDB.addOrDelete(isFavorite: favorite, data: product);
 
+    // save to local DB
+    FavoriteDB.addOrDelete(
+        isFavorite: favorite,
+        data: Product.fromJson({
+          ...product.toJson(),
+          'favorite': favorite,
+        }));
+
+    // update product list data state
     ProductListController controller = Provider.of<ProductListController>(context, listen: false);
-    List<Product> newProduct = controller.products.map((e) {
+    controller.updateProducts(controller.products.map((e) {
       if (product.id == e.id) {
         e.favorite = favorite;
       }
       return e;
-    }).toList();
-    controller.updateProducts(newProduct);
+    }).toList());
 
     for (var e in controller.products) {
       if (product.id == e.id) {
         print('e.title ${e.title} - ${e.favorite}');
       }
     }
-    // });
   }
 }

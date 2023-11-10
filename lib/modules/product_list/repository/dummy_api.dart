@@ -7,23 +7,18 @@ import 'package:ml_product_recommendation/models/failure.dart';
 import 'package:ml_product_recommendation/models/product/product_model.dart';
 
 class DummyApi {
-  static Future getProducts() async {
+  static Future<List<Product>> getProducts() async {
     Uri url = Uri.parse('https://dummyjson.com/products');
     try {
       var response = await http.get(url);
       List data = json.decode(response.body)['products'];
-      print('result A');
-      var result = data.map((e) => Product.fromJson(e)).toList();
-      print('result B');
-      for (var a in result) {
-        print('result ${a.toJson()}');
-      }
-
-      return result;
+      return data.map((e) => Product.fromJson(e)).toList();
     } on SocketException catch (_) {
       throw Failure(message: 'There is no internet connection.\n Please check your data roaming.');
     } on HttpException catch (e) {
       throw Failure(message: 'Oopss!!!\n$e.message');
+    } catch (e) {
+      throw Failure(message: 'Error!!!\n$e.message');
     }
   }
 

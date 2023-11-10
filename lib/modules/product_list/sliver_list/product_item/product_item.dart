@@ -59,7 +59,7 @@ class _ProductItemState extends State<ProductItem> {
                           parentWidth: constraints.maxWidth,
                           parentHeight: constraints.maxHeight,
                           product: widget.product,
-                          isFavorite: widget.product.favorite,
+                          isFavorite: widget.product.favorite ?? false,
                         ),
                       ),
                     ],

@@ -30,19 +30,19 @@ class LoadedStateSliverAppBar extends StatelessWidget {
           ),
           backgroundColor: const Color(0xFFF9F9F9),
           elevation: 0,
-          actions: [
-            TextButton(
-                onPressed: () async {
-                  // SharedPreferences prefs = await SharedPreferences.getInstance();
-                  // prefs.remove('token');
-                },
-                child: const Text(
-                  'View all',
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ))
-          ],
+          // actions: [
+          //   TextButton(
+          //       onPressed: () async {
+          //         // SharedPreferences prefs = await SharedPreferences.getInstance();
+          //         // prefs.remove('token');
+          //       },
+          //       child: const Text(
+          //         'View all',
+          //         style: TextStyle(
+          //           fontSize: 12,
+          //         ),
+          //       ))
+          // ],
         ),
       ),
       pinned: false,

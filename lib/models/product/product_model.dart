@@ -23,7 +23,7 @@ class Product {
   String images;
 
   @HiveField(6)
-  bool favorite;
+  bool? favorite;
 
   Product({
     required this.id,
@@ -46,6 +46,7 @@ class Product {
             : (json['category'] == 'groceries')
                 ? mensClothing[json['id']]
                 : womensClothing[json['id']],
+        favorite: json['favorite'] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,5 +56,6 @@ class Product {
         'category': category,
         'price': price,
         'images': images,
+        'favorite': favorite,
       };
 }

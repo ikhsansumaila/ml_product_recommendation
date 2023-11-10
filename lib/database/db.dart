@@ -10,9 +10,6 @@ class DB {
     Directory path = await getApplicationDocumentsDirectory();
     Hive.init(path.path);
     Hive.registerAdapter(ProductAdapter());
-    if (Hive.isBoxOpen(PRODUCT_RECOMMENDATION)) {
-      await Hive.deleteBoxFromDisk(PRODUCT_RECOMMENDATION);
-    }
     await Hive.openBox<Product>(PRODUCT_FAVORITE);
     await Hive.openBox<Product>(PRODUCT_RECOMMENDATION);
   }

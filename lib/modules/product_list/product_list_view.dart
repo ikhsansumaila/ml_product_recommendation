@@ -22,7 +22,7 @@ class ProductListView extends StatefulWidget {
 
 class _ProductListViewState extends State<ProductListView> {
   // final int index = 0;
-  Product? data;
+  List<Product>? _products;
 
   @override
   void initState() {
@@ -30,35 +30,43 @@ class _ProductListViewState extends State<ProductListView> {
     Future.delayed(Duration.zero, () => Provider.of<ProductListController>(context, listen: false).getProducts());
   }
 
+  Future _refreshList() async {
+    Provider.of<ProductListController>(context, listen: false).refreshList(_products);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<ProductListController>(
-        builder: (_, value, __) {
-          if (value.state == NotifierState.initial) {
-            return const CustomScrollView(
-              slivers: [LoadingStateSliverAppBar(), LoadingStateSliverGrid()],
-            );
-          }
-          if (value.state == NotifierState.loading) {
-            return const CustomScrollView(
-              slivers: [LoadingStateSliverAppBar(), LoadingStateSliverGrid()],
-            );
-          } else if (value.state == NotifierState.loaded) {
-            return CustomScrollView(
-              slivers: [
-                const LoadedStateSliverAppBar(),
-                LoadedStateSliverGrid(
-                  products: value.products,
-                ),
-              ],
-            );
-          } else {
-            return const CustomScrollView(
-              slivers: [LoadingStateSliverAppBar(), LoadingStateSliverGrid()],
-            );
-          }
-        },
+      body: RefreshIndicator(
+        onRefresh: _refreshList,
+        child: Consumer<ProductListController>(
+          builder: (_, value, __) {
+            if (value.state == NotifierState.initial) {
+              return const CustomScrollView(
+                slivers: [LoadingStateSliverAppBar(), LoadingStateSliverGrid()],
+              );
+            }
+            if (value.state == NotifierState.loading) {
+              return const CustomScrollView(
+                slivers: [LoadingStateSliverAppBar(), LoadingStateSliverGrid()],
+              );
+            } else if (value.state == NotifierState.loaded) {
+              _products = value.products;
+              return CustomScrollView(
+                slivers: [
+                  const LoadedStateSliverAppBar(),
+                  LoadedStateSliverGrid(
+                    products: value.products,
+                  ),
+                ],
+              );
+            } else {
+              return const CustomScrollView(
+                slivers: [LoadingStateSliverAppBar(), LoadingStateSliverGrid()],
+              );
+            }
+          },
+        ),
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(currentIndex: 0),
     );
